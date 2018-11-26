@@ -8,7 +8,7 @@ namespace ConsoleApp1
 {
     public class Data
     {
-        public DateTime DateD;
+        public DateTime DateD { get; set; }
         public int Hours { get; set; }
         public double TempValue { get; set; }
         public int Count { get; set; }
