@@ -20,9 +20,9 @@ namespace ConsoleApp1
 
         string json;
 
-        public void ReadFile(string nameFile)
+        public void ReadFile(string _nameFile)
         {
-            StreamReader r = new StreamReader(nameFile);
+            StreamReader r = new StreamReader(_nameFile);
             json = r.ReadToEnd();
         }
 
@@ -45,9 +45,9 @@ namespace ConsoleApp1
             ChangeToDate(temperaValues2);
         }
 
-        public void ChangeToDate(List<TemperatureS> tempV)
+        public void ChangeToDate(List<TemperatureS> _tempV)
         {
-            foreach (var item in tempV)
+            foreach (var item in _tempV)
             {
                 tempVal.Add(new TemperatureValue()
                 {
@@ -82,7 +82,7 @@ namespace ConsoleApp1
 
             foreach (var item in tempVal)
             {
-                if (item.Date.Day <= countDay)
+                if (date.Day <= countDay && date.Day <= item.Date.Day)
                 {
                     int hhhh = item.Date.Hour;
                     int hhpl = item.Date.Hour + 1;
@@ -108,6 +108,7 @@ namespace ConsoleApp1
                         suma = 0;
                         suma += (item.TempValue * item.TempValue);
                         date = item.Date.Date;
+
                         if (hh < 23)
                         {
                             hh += 1;
@@ -120,6 +121,16 @@ namespace ConsoleApp1
                 }
                 else
                 {
+                    if((date.Day == 30 || date.Day == 31) && item.Date.Day == 1)
+                    {
+                        godz.Add(new Data()
+                        {
+                            DateD = date,
+                            Hours = hhh,
+                            TempValue = suma,
+                            Count = count
+                        });
+                    }
                     if (hh < 23)
                     {
                         hh += 1;
@@ -128,6 +139,7 @@ namespace ConsoleApp1
                     {
                         hh = 0;
                     }
+                    date = item.Date.Date;
                     countDay = DateTime.DaysInMonth(item.Date.Year, item.Date.Month);
                 }
             }
@@ -145,6 +157,7 @@ namespace ConsoleApp1
                     DateD = item.DateD,                    
                     Hours = item.Hours,
                     TempValue = (Math.Sqrt(item.TempValue)) / item.Count,
+                    Count=item.Count
                 });
                 
             }
