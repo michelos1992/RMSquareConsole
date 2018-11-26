@@ -61,7 +61,8 @@ namespace ConsoleApp1
         public void RMSFirstPart()
         {
             var dl = tempVal.FirstOrDefault();
-            
+            var lastEl = tempVal.Last();
+
             int hhh = 0;
             int count = 0;
             int countDay = DateTime.DaysInMonth(tempVal.FirstOrDefault().Date.Year, tempVal.FirstOrDefault().Date.Month);
@@ -104,6 +105,10 @@ namespace ConsoleApp1
                             Count = count
                         });
 
+                        if(item.Date.Day == 31 && item.Date.Hour == 22)
+                        {
+                            int cosik = 0;
+                        }
                         count = 0;
                         suma = 0;
                         suma += (item.TempValue * item.TempValue);
@@ -141,6 +146,16 @@ namespace ConsoleApp1
                     }
                     date = item.Date.Date;
                     countDay = DateTime.DaysInMonth(item.Date.Year, item.Date.Month);
+                }
+                if (item.Equals(lastEl))
+                {
+                    godz.Add(new Data()
+                    {
+                        DateD = date,
+                        Hours = hhh,
+                        TempValue = suma,
+                        Count = count
+                    });
                 }
             }
             RMSSecondPart(godz);
