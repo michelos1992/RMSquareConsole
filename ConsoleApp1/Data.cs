@@ -12,5 +12,7 @@ namespace ConsoleApp1
         public int Hours { get; set; }
         public double TempValue { get; set; }
         public int Count { get; set; }
+        public double Min { get; set; }
+        public double Max { get; set; }
     }
 }

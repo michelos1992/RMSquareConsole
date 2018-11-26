@@ -17,8 +17,8 @@ namespace ConsoleApp1
             string nameFile;
             try
             {
-                //Console.WriteLine("Podaj nazwę pliku:");
-                nameFile = "Temperatura.json"; //Console.ReadLine(); 
+                Console.WriteLine("Podaj nazwę pliku:");
+                nameFile = Console.ReadLine(); //"Temperatura.json";
 
                 RMSquare TemperValues = new RMSquare();
                 TemperValues.ReadFile(nameFile);

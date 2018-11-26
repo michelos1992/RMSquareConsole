@@ -67,6 +67,8 @@ namespace ConsoleApp1
             int count = 0;
             int countDay = DateTime.DaysInMonth(tempVal.FirstOrDefault().Date.Year, tempVal.FirstOrDefault().Date.Month);
             int hh = dl.Date.Hour;
+            double min = tempVal.FirstOrDefault().TempValue;
+            double max = tempVal.FirstOrDefault().TempValue;
 
             double suma = 0;
 
@@ -93,6 +95,15 @@ namespace ConsoleApp1
                         hhh = item.Date.Hour;
                         count++;
 
+                        if (min > item.TempValue)
+                        {
+                            min = item.TempValue;
+                        }
+                        else
+                        {
+                            max = item.TempValue;
+                        }
+
                         date = item.Date.Date;
                     }
                     else
@@ -102,13 +113,11 @@ namespace ConsoleApp1
                             DateD = date,
                             Hours = hhh,
                             TempValue = suma,
-                            Count = count
+                            Count = count,
+                            Max=max,
+                            Min=min,
                         });
 
-                        if(item.Date.Day == 31 && item.Date.Hour == 22)
-                        {
-                            int cosik = 0;
-                        }
                         count = 0;
                         suma = 0;
                         suma += (item.TempValue * item.TempValue);
