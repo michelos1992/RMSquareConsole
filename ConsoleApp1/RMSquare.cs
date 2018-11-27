@@ -98,8 +98,8 @@ namespace ConsoleApp1
                             totalI += 1;
                         }
 
-                        min = CheckMin(item.TempValue);
-                        max = CheckMax(item.TempValue);
+                        min = CheckMin(min, item.TempValue);
+                        max = CheckMax(max, item.TempValue);
                         
                         date = item.Date.Date;
                     }
@@ -123,6 +123,8 @@ namespace ConsoleApp1
                         totalI = 0;
                         suma += (item.TempValue * item.TempValue);
                         date = item.Date.Date;
+                        min = 0;
+                        max = 0;
 
                         nextHour = CheckHourNext(nextHour);
                     }
@@ -212,9 +214,9 @@ namespace ConsoleApp1
             }
         }
 
-        public double CheckMin(double _min)
+        public double CheckMin(double fmin, double _min)
         {
-            double mmin = 0;
+            double mmin = fmin;
             if (mmin > _min)
             {
                 mmin = _min;
@@ -225,10 +227,10 @@ namespace ConsoleApp1
                 return mmin;
             }
         }
-        public double CheckMax(double _max)
+        public double CheckMax(double fmax, double _max)
         {
-            double mmax = 0;
-            if (mmax > _max)
+            double mmax = fmax;
+            if (mmax < _max)
             {
                 mmax = _max;
                 return mmax;
