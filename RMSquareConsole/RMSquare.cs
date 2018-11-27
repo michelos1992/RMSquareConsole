@@ -100,7 +100,7 @@ namespace RMSquareConsole
 
                         min = CheckMin(min, item.TempValue);
                         max = CheckMax(max, item.TempValue);
-                        
+
                         date = item.Date.Date;
                     }
                     else
@@ -111,10 +111,10 @@ namespace RMSquareConsole
                             Hours = currHourEl,
                             Average = suma,
                             Count = count,
-                            Max=max,
-                            Min=min,
-                            TotalFalls=totalF,
-                            TotalIncrease=totalI
+                            Max = max,
+                            Min = min,
+                            TotalFalls = totalF,
+                            TotalIncrease = totalI
                         });
 
                         count = 0;
@@ -131,7 +131,7 @@ namespace RMSquareConsole
                 }
                 else
                 {
-                    if((date.Day == 30 || date.Day == 31) && item.Date.Day == 1)
+                    if ((date.Day == 30 || date.Day == 31) && item.Date.Day == 1)
                     {
                         godz.Add(new Data()
                         {
@@ -178,25 +178,25 @@ namespace RMSquareConsole
 
                 RMSquareList.Add(new Data()
                 {
-                    DateD = item.DateD,                    
+                    DateD = item.DateD,
                     Hours = item.Hours,
                     Average = (Math.Sqrt(item.Average)) / item.Count,
-                    Count=item.Count,
+                    Count = item.Count,
                     Max = item.Max,
                     Min = item.Min,
-                    TotalFalls=item.TotalFalls,
-                    TotalIncrease=item.TotalIncrease
+                    TotalFalls = item.TotalFalls,
+                    TotalIncrease = item.TotalIncrease
                 });
-                
+
             }
         }
 
         public void WriteFile()
         {
             string path = "D:\\Dropbox\\moje\\asdf\\Projekt-rekuratacja\\RMSquareConsole\\bin\\Debug\\export.json";
-            
+
             string json = JsonConvert.SerializeObject(RMSquareList, Formatting.Indented);
-            
+
             File.WriteAllText(path, json);
         }
 
