@@ -60,13 +60,14 @@ namespace ConsoleApp1
 
         public void RMSFirstPart()
         {
-            var dl = tempVal.FirstOrDefault();
+            var firstEl = tempVal.FirstOrDefault();
             var lastEl = tempVal.Last();
 
-            int hhh = 0;
+            int currHourEl = 0;
             int count = 0;
             int countDay = DateTime.DaysInMonth(tempVal.FirstOrDefault().Date.Year, tempVal.FirstOrDefault().Date.Month);
-            int hh = dl.Date.Hour;
+            int nextHour = firstEl.Date.Hour;
+            int totalF = 0, totalI = 0;
             double min = tempVal.FirstOrDefault().TempValue;
             double max = tempVal.FirstOrDefault().TempValue;
 
@@ -74,36 +75,32 @@ namespace ConsoleApp1
 
             date = tempVal.FirstOrDefault().Date;
 
-            if (hh < 23)
-            {
-                hh += 1;
-            }
-            else
-            {
-                hh = 0;
-            }
+            nextHour = CheckHourNext(nextHour);
 
             foreach (var item in tempVal)
             {
                 if (date.Day <= countDay && date.Day <= item.Date.Day)
                 {
-                    int hhhh = item.Date.Hour;
-                    int hhpl = item.Date.Hour + 1;
-                    if (hhhh < hh && date.Day == item.Date.Day || (hhhh == 23 && hh == 0))
+                    int currentHour = item.Date.Hour;
+
+                    if (currentHour < nextHour && date.Day == item.Date.Day || (currentHour == 23 && nextHour == 0))
                     {
                         suma += (item.TempValue * item.TempValue);
-                        hhh = item.Date.Hour;
+                        currHourEl = item.Date.Hour;
                         count++;
 
-                        if (min > item.TempValue)
+                        if (min != item.TempValue)
                         {
-                            min = item.TempValue;
+                            totalF += 1;
                         }
-                        else
+                        if (max != item.TempValue)
                         {
-                            max = item.TempValue;
+                            totalI += 1;
                         }
 
+                        min = CheckMin(item.TempValue);
+                        max = CheckMax(item.TempValue);
+                        
                         date = item.Date.Date;
                     }
                     else
@@ -111,26 +108,23 @@ namespace ConsoleApp1
                         godz.Add(new Data()
                         {
                             DateD = date,
-                            Hours = hhh,
-                            TempValue = suma,
+                            Hours = currHourEl,
+                            Average = suma,
                             Count = count,
                             Max=max,
                             Min=min,
+                            TotalFalls=totalF,
+                            TotalIncrease=totalI
                         });
 
                         count = 0;
                         suma = 0;
+                        totalF = 0;
+                        totalI = 0;
                         suma += (item.TempValue * item.TempValue);
                         date = item.Date.Date;
 
-                        if (hh < 23)
-                        {
-                            hh += 1;
-                        }
-                        else
-                        {
-                            hh = 0;
-                        }
+                        nextHour = CheckHourNext(nextHour);
                     }
                 }
                 else
@@ -140,30 +134,34 @@ namespace ConsoleApp1
                         godz.Add(new Data()
                         {
                             DateD = date,
-                            Hours = hhh,
-                            TempValue = suma,
-                            Count = count
+                            Hours = currHourEl,
+                            Average = suma,
+                            Count = count,
+                            Max = max,
+                            Min = min,
+                            TotalFalls = totalF,
+                            TotalIncrease = totalI
                         });
                     }
-                    if (hh < 23)
-                    {
-                        hh += 1;
-                    }
-                    else
-                    {
-                        hh = 0;
-                    }
+
+                    nextHour = CheckHourNext(nextHour);
+
                     date = item.Date.Date;
                     countDay = DateTime.DaysInMonth(item.Date.Year, item.Date.Month);
                 }
+
                 if (item.Equals(lastEl))
                 {
                     godz.Add(new Data()
                     {
                         DateD = date,
-                        Hours = hhh,
-                        TempValue = suma,
-                        Count = count
+                        Hours = currHourEl,
+                        Average = suma,
+                        Count = count,
+                        Max = max,
+                        Min = min,
+                        TotalFalls = totalF,
+                        TotalIncrease = totalI
                     });
                 }
             }
@@ -180,8 +178,12 @@ namespace ConsoleApp1
                 {
                     DateD = item.DateD,                    
                     Hours = item.Hours,
-                    TempValue = (Math.Sqrt(item.TempValue)) / item.Count,
-                    Count=item.Count
+                    Average = (Math.Sqrt(item.Average)) / item.Count,
+                    Count=item.Count,
+                    Max = item.Max,
+                    Min = item.Min,
+                    TotalFalls=item.TotalFalls,
+                    TotalIncrease=item.TotalIncrease
                 });
                 
             }
@@ -195,5 +197,47 @@ namespace ConsoleApp1
             
             File.WriteAllText(path, json);
         }
+
+        public int CheckHourNext(int _nextHour)
+        {
+            if (_nextHour < 23)
+            {
+                _nextHour += 1;
+                return _nextHour;
+            }
+            else
+            {
+                _nextHour = 0;
+                return _nextHour;
+            }
+        }
+
+        public double CheckMin(double _min)
+        {
+            double mmin = 0;
+            if (mmin > _min)
+            {
+                mmin = _min;
+                return mmin;
+            }
+            else
+            {
+                return mmin;
+            }
+        }
+        public double CheckMax(double _max)
+        {
+            double mmax = 0;
+            if (mmax > _max)
+            {
+                mmax = _max;
+                return mmax;
+            }
+            else
+            {
+                return mmax;
+            }
+        }
+
     }
 }
