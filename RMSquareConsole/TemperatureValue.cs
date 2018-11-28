@@ -9,6 +9,6 @@ namespace RMSquareConsole
     public class TemperatureValue
     {
         public DateTime Date { get; set; }
-        public double TempValue { get; set; }
+        public double TempValue { get; set; } 
     }
 }
